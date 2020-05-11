@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 class gravity_calc {
 private:
 	double n;
