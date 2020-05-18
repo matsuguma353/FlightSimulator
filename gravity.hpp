@@ -4,14 +4,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <boost/numeric/ublas/matrix.hpp>
+
+using namespace boost::numeric::ublas;
 
 class gravity_calc {
 private:
-	double n;
-	double m;
+	double GM = 398600.4415;
 public:
-	gravity_calc(double _n, double _m) :n(_n), m(_m) {}
-	double get_stokes_coef() {};
-	double Legendre(double n, double m, double x) {};
-	double geopotential(double S, double L) {};
+	matrix<double> get_stokes_coef(int n);
+	double Legendre(int n, int m, double x);
+	double geopotential(double S, double L);
 };

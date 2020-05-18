@@ -1,63 +1,43 @@
 #include "gravity.hpp"
 
 using namespace std;
+using namespace boost::numeric::ublas;
 
-/*
-	line.find_first_not_of(delim, spos)
-	文字列line中の、delimと一致しない最初の文字の位置を返す。文字の検索はsposから行う
-
-	string::npos
-	findで値が見つからなかったときに返す値
-*/
-
-//位数9までのストークス係数を取ってくる
-double gravity_calc::get_stokes_coef() {
-	double Cnm[10][10] = { 0 };
-	double Snm[10][10] = { 0 };
+//位数nまでのストークス係数を取ってくる
+matrix<double> gravity_calc::get_stokes_coef(int n) {
+	matrix<double> Cnm(n + 1, n - 1);
+	matrix<double> Snm(n + 1, n - 1);
 
 	//csvファイルを開く
 	ifstream ifs("egm96.csv");
 	string line;
-	const string delim = ",";
+	const char delim = ',';
 	//一行目を取得(ヘッダ行なので使わない)
 	getline(ifs, line);
 
-	int row;
-	int col;
+	int row = 0;
+	int col = 0;
 
-	//行が取得できたらループ続行
-	while (getline(ifs, line)) {
+	for (int i = 0; i < n; i = row) {
+		getline(ifs, line, delim);
+		col = stoi(line);
 
-		/*
-			find_first_not_ofで値が見つからなかったとき、nposが返ってくる。
-			文字列をeposの位置から検索して、","と異なる文字が出てくる最初の位置を返す。
-			もし","と異なる文字が出てくる最初の位置がない(=文字列に","が含まれない)時はnposが返ってきて、そこでforループが終了する
-		*/
+		getline(ifs, line, delim);
+		row = stoi(line);
 
-		string::size_type epos = 0;
-		string::size_type spos = line.find_first_not_of(delim, epos);
+		getline(ifs, line, delim);
+		Cnm(row, col - 2) = stod(line);
 
-		string token = line.substr(spos, (epos = line.find_first_of(delim, spos)) - spos);
-		col = stoi(token) - 2;
+		getline(ifs, line, delim);
+		Snm(row, col - 2) = stod(line);
 
-
-
-
-		for (string::size_type spos, epos = 0; (spos = line.find_first_not_of(delim, epos)) != string::npos;) {
-			string token = line.substr(spos, (epos = line.find_first_of(delim, spos)) - spos);
-
-			if (token.length != 1) {
-
-			}
-
-			
-		}
+		getline(ifs, line);
 	}
 
-	return 0;
+	return Cnm, Snm;
 };
 
-double gravity_calc::Legendre(double n, double m, double x) {
+double gravity_calc::Legendre(int n, int m, double x) {
 	return 0;
 };
 
