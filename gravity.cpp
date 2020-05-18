@@ -8,8 +8,19 @@ matrix<double> gravity_calc::get_stokes_coef(int n) {
 	matrix<double> Cnm(n + 1, n - 1);
 	matrix<double> Snm(n + 1, n - 1);
 
+	//行列の初期化
+	for (int i = 0; i < n + 1; i++) {
+		for (int j = 0; j < n - 1; j++) {
+			Cnm(i, j) = 0;
+			Snm(i, j) = 0;
+		}
+	}
+
 	//csvファイルを開く
 	ifstream ifs("egm96.csv");
+	if (!ifs) {
+		cout << "Cannot open file.\n";
+	}
 	string line;
 	const char delim = ',';
 	//一行目を取得(ヘッダ行なので使わない)
