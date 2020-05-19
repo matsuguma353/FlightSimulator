@@ -3,7 +3,7 @@
 using namespace std;
 using namespace boost::numeric::ublas;
 
-//位数nまでのストークス係数を取ってくる
+//次数nまでのストークス係数を取ってくる
 void gravity_calc::get_stokes_coef(int n, matrix<double>& N, matrix<double>& M) {
 	matrix<double> Cnm(n + 1, n - 1);
 	matrix<double> Snm(n + 1, n - 1);
@@ -49,8 +49,20 @@ void gravity_calc::get_stokes_coef(int n, matrix<double>& N, matrix<double>& M) 
 	M = Snm;
 };
 
-double gravity_calc::Legendre(int n, int m, double x) {
-	return 0;
+void gravity_calc::Legendre(int n, double lat, matrix<double>& L) {
+	matrix<double> Pnm(n + 1, n - 1);
+
+	for (int i = 0; i < n + 1; i++) {
+		for (int j = 0; j < n - 1; j++) {
+			if ((i == 0) && (j == 0)) {
+				Pnm(1,0)=
+			}
+			else {
+
+			}
+		}
+	}
+
 };
 
 double gravity_calc::geopotential(double S, double L) {

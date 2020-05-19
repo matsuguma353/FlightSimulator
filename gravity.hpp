@@ -13,6 +13,6 @@ private:
 	double GM = 398600.4415;
 public:
 	void get_stokes_coef(int n, matrix<double>& N, matrix<double>& M);
-	double Legendre(int n, int m, double x);
+	void Legendre(int n, double lat, matrix<double>& L);
 	double geopotential(double S, double L);
 };
