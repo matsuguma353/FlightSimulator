@@ -12,7 +12,7 @@ class gravity_calc {
 private:
 	double GM = 398600.4415;
 public:
-	matrix<double> get_stokes_coef(int n);
+	void get_stokes_coef(int n, matrix<double>& N, matrix<double>& M);
 	double Legendre(int n, int m, double x);
 	double geopotential(double S, double L);
 };

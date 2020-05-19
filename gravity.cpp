@@ -4,7 +4,7 @@ using namespace std;
 using namespace boost::numeric::ublas;
 
 //位数nまでのストークス係数を取ってくる
-matrix<double> gravity_calc::get_stokes_coef(int n) {
+void gravity_calc::get_stokes_coef(int n, matrix<double>& N, matrix<double>& M) {
 	matrix<double> Cnm(n + 1, n - 1);
 	matrix<double> Snm(n + 1, n - 1);
 
@@ -45,7 +45,8 @@ matrix<double> gravity_calc::get_stokes_coef(int n) {
 		getline(ifs, line);
 	}
 
-	return Cnm, Snm;
+	N = Cnm;
+	M = Snm;
 };
 
 double gravity_calc::Legendre(int n, int m, double x) {
