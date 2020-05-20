@@ -15,4 +15,5 @@ public:
 	void get_stokes_coef(int n, matrix<double>& N, matrix<double>& M);
 	void Legendre(int n, double lat, matrix<double>& L);
 	double geopotential(double S, double L);
+	int semifactorial(int n);
 };

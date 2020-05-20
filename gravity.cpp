@@ -52,19 +52,46 @@ void gravity_calc::get_stokes_coef(int n, matrix<double>& N, matrix<double>& M) 
 void gravity_calc::Legendre(int n, double lat, matrix<double>& L) {
 	matrix<double> Pnm(n + 1, n - 1);
 
+	//行列の初期化
 	for (int i = 0; i < n + 1; i++) {
 		for (int j = 0; j < n - 1; j++) {
-			if ((i == 0) && (j == 0)) {
-				Pnm(1,0)=
+			Pnm(i, j) = 0;
+		}
+	}
+
+	//row(ルジャンドル陪関数の位数)を固定
+	for (int row = 0; row < n + 1; row++) {
+		//固定したrowでのルジャンドル陪関数Pnm(i,i),Pnm(i,i+1),Pnm(i,i+2),...を漸化式で計算していく
+		for (int col = row; col < n - 2; col++) {
+			//通常Pnm(row,row-1)から計算を始めるが、row=0のときPnm(0,-1)はPnmの範囲外なので、row=0のときのみ別で計算する
+			if ((row == 0) && (col == 0)) {
+				Pnm(row, col) = 1;                                      //Pnm(0, 0)
+				Pnm(row, col + 1) = sin(lat) * Pnm(row, col);           //Pnm(0, 1)
+			}
+			else if (row == 0) {
+				Pnm(row, col + 1) = ((2 * col + 1 - row) / (col + 1 - row)) * sin(lat) * Pnm(row, col) - ((col + row) / (col + 1 - row)) * Pnm(row, col - 1);
+			}
+			else if ((row != 0) && (col == row)) {
+				Pnm(row, col) = 0;
+				Pnm(row, col + 1) = semifactorial(2 * row - 1) * pow((1 - pow(sin(lat), 2)), row / 2);
 			}
 			else {
-
+				Pnm(row, col + 1) = ((2 * col + 1 - row) / (col + 1 - row)) * sin(lat) * Pnm(row, col) - ((col + row) / (col + 1 - row)) * Pnm(row, col - 1);
 			}
 		}
 	}
 
+	L = Pnm;
 };
 
 double gravity_calc::geopotential(double S, double L) {
 	return 0;
 };
+
+int gravity_calc::semifactorial(int n) {
+	for (int i = 2; i < n; i += 2) {
+		n *= n - i;
+	}
+
+	return n;
+}
