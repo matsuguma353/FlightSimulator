@@ -84,8 +84,22 @@ void gravity_calc::Legendre(int n, double lat, matrix<double>& L) {
 	L = Pnm;
 };
 
-double gravity_calc::geopotential(double S, double L) {
-	return 0;
+double gravity_calc::geopotential(double r, double lat, double lon, int n, matrix<double> N, matrix<double> M) {
+	double U;
+	//PnmはCnm,Snmと違ってそのときそのときのロケットの位置で変化するので、geopotentialを呼び出した時に計算するようにする
+	matrix<double> Pnm;
+
+	Legendre(n, lat, Pnm);
+
+	for (int i = 2; i <= n; i++) {
+		for (int j = 0; j <= i; j++) {
+			U = pow(a / r, i) * Pnm(j, i) * (N(j, i) * cos(j * lon) + M(j, i) * sin(j * lon));
+		}
+	}
+
+	U = (GM / r) * ++U;
+
+	return U;
 };
 
 int gravity_calc::semifactorial(int n) {
