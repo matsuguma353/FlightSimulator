@@ -93,8 +93,7 @@ double gravity_calc::geopotential(double r, double lat, double lon, int n, matri
 		}
 	}
 
-	U++;
-	U = (GM / r) * U;
+	U = (GM / r) * (U + 1);
 
 	return U;
 };
